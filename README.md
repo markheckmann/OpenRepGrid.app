@@ -1,6 +1,6 @@
 # gridsampler
 
-[![Build Status](https://travis-ci.org/markheckmann/gridsampler.svg?branch=master)](https://travis-ci.org/markheckmann/gridsampler)
+[![Build Status](https://travis-ci.org/markheckmann/OpenRepGrid.gui.svg?branch=master)](https://travis-ci.org/markheckmann/OpenRepGrid.gui)
 
 ### Introduction
 
