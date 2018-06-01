@@ -1,0 +1,11 @@
+citHeader("To cite OpenRepGrid.gui in publications, please use:")
+
+citEntry(entry = "article",
+  author = "Mark Heckmann, Lukas Burk",
+  title = "OpenRepGrid.gui: A tool to analyse repertory grid data. R package version 0.1.",
+  journal = "Zenodo",
+  year = "2018",
+  doi = "10.5281/zenodo.61067",
+  url = "https://github.com/markheckmann/OpenRepGrid.gui",
+  textVersion = "Heckmann, M. (2018). OpenRepGrid.gui: A tool to analyse repertory grid data. R package version 0.1. *Zenodo*. doi:10.5281/zenodo.61067"
+)

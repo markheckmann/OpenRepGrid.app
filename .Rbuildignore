@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+docs
+cran-comments.md
+^\.travis\.yml$
+GPL-3
