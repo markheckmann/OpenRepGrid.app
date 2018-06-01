@@ -4,8 +4,7 @@
 \alias{OpenRepGrid.gui}
 \title{Run OpenRepGrid.gui app}
 \usage{
-OpenRepGrid.gui(display.mode = "auto",
-  launch.browser = getOption("shiny.launch.browser", interactive()))
+OpenRepGrid.gui(display.mode = "auto", launch.browser = TRUE)
 }
 \arguments{
 \item{display.mode}{\code{auto} by default, can also be \code{showcase}.

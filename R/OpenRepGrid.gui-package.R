@@ -33,12 +33,14 @@ NULL
 #' }
 #' 
 OpenRepGrid.gui <- function(display.mode = "auto",
-                            launch.browser = getOption("shiny.launch.browser", interactive()))
+                            launch.browser = TRUE)
+                            #launch.browser = getOption("shiny.launch.browser", interactive()))
 {
   appDir <- system.file("shiny", package = "OpenRepGrid.gui")
   if (appDir == "") {
     stop("Could not find shiny directory. Try re-installing `OpenRepGrid.gui`.", call. = FALSE)
   }
   
+  #launch.browser
   shiny::runApp(appDir, display.mode = display.mode, launch.browser = launch.browser)
 }
