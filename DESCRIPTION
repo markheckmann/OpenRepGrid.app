@@ -15,14 +15,14 @@ Description:
     Under the hood, the GUI uses functions from the OpenRepGrid package 
     (<https://CRAN.R-project.org/package=OpenRepGrid>).
 Version: 0.1
-Date: 2018-06-01
+Date: 2018-06-03
 Imports:
     shiny,
-    ggplot2,
     reshape2,
     plyr,
     shinythemes,
-    shinyBS
+    shinyBS,
+    stringr
 Suggests:
     knitr,
     testthat,
