@@ -37,7 +37,7 @@ values$elements_clusterboot <- NULL
 
 #### UI variables defined here for convenience ####
 # Current gridsampler version (displayed in header)
-gridsampler_version <- 0.1 # paste0("gridsampler v", packageVersion("gridsampler"))
+pkg_version <- 0.1 # paste0("OpenRepGrid.app v", packageVersion("OpenRepGrid.app"))
 
 # # Column descriptions
 # desc_col1 <- helpText("")
