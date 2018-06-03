@@ -5,7 +5,7 @@
 
 ### Introduction
 
-OpenRepGrid.app is a graphical user interface for the [OpenRepGrid R package](http://docu.openrepgrid.org/). The package is build to make the functionality of OpenRepGrid available to repertory grid users who do not have a technical or coding background.
+OpenRepGrid.app is a graphical user interface for the [OpenRepGrid R package](http://docu.openrepgrid.org/) which runs in a browser. The package is build to make the functionality of OpenRepGrid available to repertory grid users who do not have a technical or coding background.
 Hence, for using the app it is not necessary to know the R language. 
 
 
