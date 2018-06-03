@@ -1,6 +1,6 @@
 Package: OpenRepGrid.app
 License: GPL-3
-Title: Graphical User Interface to Analyze Repertory Grid Data.
+Title: Graphical User Interface to Analyze Repertory Grid Data
 Type: Package
 LazyLoad: yes
 Authors@R: person("Mark", "Heckmann", 
