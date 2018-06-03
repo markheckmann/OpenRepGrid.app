@@ -26,6 +26,7 @@ NULL
 #' @import shiny
 #' @import shinythemes
 #' @import shinyBS
+#' @import stringr
 #' 
 #' @examples
 #' \dontrun{
