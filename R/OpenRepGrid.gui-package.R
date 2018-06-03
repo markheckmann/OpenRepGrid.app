@@ -27,6 +27,7 @@ NULL
 #' @import shinythemes
 #' @import shinyBS
 #' @import stringr
+#' @import OpenRepGrid
 #' 
 #' @examples
 #' \dontrun{
