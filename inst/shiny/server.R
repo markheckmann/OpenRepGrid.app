@@ -53,8 +53,8 @@ shinyServer(function(input, output, session) {
   #### |-- Load grids ####
   
   output$load_grid <- renderUI({
-    list(h3("Welcome to OpenRepGrid.gui"),
-         HTML("<p><i>OpenRepGrid.gui</i> is an 
+    list(h3("Welcome to OpenRepGrid.app"),
+         HTML("<p><i>OpenRepGrid.app</i> is an 
               online grid analysis software. It allows to carry out several kinds of
               analysis for repertory grid data. The software is based on the 
               <a href='http://docu.openrepgrid.org' target='_blank'>OpenRepGrid</a> 

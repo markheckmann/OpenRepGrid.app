@@ -57,7 +57,7 @@ cond.panel.settings <-
 
 shinyUI(pageWithSidebar(
   
-  headerPanel("OpenRepGrid.gui"),
+  headerPanel("OpenRepGrid.app"),
   
   
   #### |-- Sidebar panel ####

@@ -1,5 +1,5 @@
 
-#' \pkg{OpenRepGrid.gui} - Graphical User Interface to Analyze Repertory Grid Data
+#' \pkg{OpenRepGrid.app} - Graphical User Interface to Analyze Repertory Grid Data
 #'
 #' @references
 #' \itemize{
@@ -7,13 +7,13 @@
 #'  \item Jankowicz, D. (2004). The easy guide to repertory grids. Chichester, England: John Wiley & Sons.
 #'  }
 #' @keywords package repgrid
-#' @name OpenRepGrid.gui-package
+#' @name OpenRepGrid.app-package
 #' @docType package
 NULL
 
 
 
-#' Run OpenRepGrid.gui app
+#' Run OpenRepGrid.app
 #'
 #' This function starts the OpenRepGrid GUI app.
 #' 
@@ -29,16 +29,16 @@ NULL
 #' 
 #' @examples
 #' \dontrun{
-#' OpenRepGrid.gui()
+#' OpenRepGrid.app()
 #' }
 #' 
-OpenRepGrid.gui <- function(display.mode = "auto",
+OpenRepGrid.app <- function(display.mode = "auto",
                             launch.browser = TRUE)
                             #launch.browser = getOption("shiny.launch.browser", interactive()))
 {
-  appDir <- system.file("shiny", package = "OpenRepGrid.gui")
+  appDir <- system.file("shiny", package = "OpenRepGrid.app")
   if (appDir == "") {
-    stop("Could not find shiny directory. Try re-installing `OpenRepGrid.gui`.", call. = FALSE)
+    stop("Could not find shiny directory. Try re-installing `OpenRepGrid.app`.", call. = FALSE)
   }
   
   #launch.browser

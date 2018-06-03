@@ -1,4 +1,4 @@
-library(OpenRepGrid.gui)
+library(OpenRepGrid.app)
 
 context("Some context")
 

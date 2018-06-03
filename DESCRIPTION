@@ -1,4 +1,4 @@
-Package: OpenRepGrid.gui
+Package: OpenRepGrid.app
 License: GPL-3
 Title: Graphical User Interface to Analyze Repertory Grid Data.
 Type: Package
@@ -10,7 +10,7 @@ Description:
     Repertory grids are a qualitative-quantitative 
     data collection technique devised by George A. Kelly in the 1950s.
     Today, grids are used across a variety of disciplines from 
-    clinical psychology to marketing. OpenRepGrid.gui is a graphical 
+    clinical psychology to marketing. OpenRepGrid.app is a graphical 
     user interface (GUI) that allows analyzing and visualizing grid data.
     Under the hood, the GUI uses functions from the OpenRepGrid package 
     (<https://CRAN.R-project.org/package=OpenRepGrid>).
@@ -28,7 +28,7 @@ Suggests:
     testthat,
     rmarkdown
 Encoding: UTF-8
-URL: https://github.com/markheckmann/OpenRepGrid.gui
-BugReports: https://github.com/markheckmann/OpenRepGrid.gui/issues
+URL: https://github.com/markheckmann/OpenRepGrid.app
+BugReports: https://github.com/markheckmann/OpenRepGrid.app/issues
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
