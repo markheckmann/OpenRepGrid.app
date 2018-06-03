@@ -101,6 +101,7 @@ level1.panel.bertin <-
            htmlOutput("bertin_info"),  
            # bertin plot 
            plotOutput("bertin", width="600px", height="600px"),  
+           br(), br(), br(),  # vertical space under bertin figure
            value="bertin_standard")
 
 
