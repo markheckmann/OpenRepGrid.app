@@ -1,4 +1,4 @@
 library(testthat)
 
-test_check("gridsampler")
+test_check("OpenRepGrid.app")
 
