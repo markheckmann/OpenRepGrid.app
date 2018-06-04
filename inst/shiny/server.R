@@ -49,12 +49,62 @@ shinyServer(function(input, output, session) {
   
   
   
+  # current grid gets changed
+  observe({
+    g <- values$current_grid
+    if (!is.null(g)) {
+      values$e.names <- getElementNames(g)
+      values$c.names <- getConstructNames2(g) 
+    #  values$constructs_clusterboot <- NULL    # reset clusterboot results
+    }
+    # update all element and construct selectors
+    updateCheckboxGroupInput(session, "biplot_element_selector_12", 
+                             label="",  choices=values$e.names, 
+                             selected=values$e.names)
+    updateCheckboxGroupInput(session, "biplot_construct_selector_12", 
+                             label="",  choices=values$c.names, 
+                             selected=values$c.names) 
+    # updateSelectInput(session, "indexes_implicative_dilemma_ideal", 
+    #                   label="Ideal element",  choices=values$e.names, 
+    #                   selected=values$e.names[1]) 
+    # updateSelectInput(session, "indexes_implicative_dilemma_self", 
+    #                   label="Self element",  choices=values$e.names, 
+    #                   selected=values$e.names[2]) 
+  })
+  
+  # update element selection
+  observe({
+    input$biplot_12_toggle_elements   # make reactive
+    e.names <- isolate(values$e.names)
+    if (is.null(isolate(input$biplot_element_selector_12)))
+      select <- e.names
+    else
+      select <- NULL
+    updateCheckboxGroupInput(session, "biplot_element_selector_12", label="", 
+                             choices=e.names, selected=select)
+  }, suspended=FALSE)
+  
+  observe({
+    input$biplot_12_toggle_constructs   # make reactive
+    c.names <- isolate(values$c.names)
+    if (is.null(isolate(input$biplot_construct_selector_12)))
+      select <- c.names
+    else
+      select <- NULL
+    updateCheckboxGroupInput(session, "biplot_construct_selector_12", label="", 
+                             choices=c.names, selected=select)
+  }, suspended=FALSE)
+  
+  
+  
+  
+  
   #### ______________________ ####
   #### RENDERERS #### 
   
   
   
-  #### __Load grids ####
+  #### __ Load grids ####
   
   output$load_grid <- renderUI({
     list(h3("Welcome to OpenRepGrid.app"),
@@ -88,7 +138,7 @@ shinyServer(function(input, output, session) {
   
   
   
-  #### __Bertin ####
+  #### __ Bertin ####
   
   output$bertin_info <- renderUI({
     HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/bertin.html") )  
@@ -109,7 +159,61 @@ shinyServer(function(input, output, session) {
   })
   
 
-
+  
+  #### __ Biplot ####
+  
+  #### ____ Biplot Dim 1-2 ####
+  
+  output$biplot_info <- renderUI({
+    HTML( inject_info_on_top_of_ui_pages("biplot", "www/info/biplot.html"))  
+  })
+  
+  output$biplot2d_12 <- renderPlot(
+  {
+    input$biplot_12_update_button_elements      # trigger rendering by button
+    input$biplot_12_update_button_constructs    # trigger rendering by button
+    x <- get_file() 
+    e.sel <- isolate(input$biplot_element_selector_12)
+    e.names <-isolate(values$e.names)    
+    e.i <- which(e.names %in% e.sel)
+    
+    c.sel <- isolate(input$biplot_construct_selector_12)
+    c.names <-isolate(values$c.names)    
+    c.i <- which(c.names %in% c.sel)
+    
+    dim <- c(input$biplot_12_dim_1, input$biplot_12_dim_2)
+    flipaxes <- c(input$biplot_12_flipaxes_1, input$biplot_12_flipaxes_2)
+    if (dim[1] == dim[2]) {
+      plot.new()
+      text(.5, .5, "dimensions can not be identical", cex=1.2)
+    } else if (!is.null(x)) {
+      biplot2d(x, 
+               g=input$biplot_12_g, 
+               dim=dim, 
+               center=input$biplot_12_center, 
+               normalize=input$biplot_12_normalize,
+               flipaxes=flipaxes, 
+               e.points.show=e.i, 
+               e.labels.show=e.i,
+               c.labels.show=c.i, 
+               c.points.show =c.i,
+               e.label.cex=input$biplot_12_e_label_cex, 
+               c.label.cex=input$biplot_12_c_label_cex,
+               e.point.cex=input$biplot_12_e_point_cex,
+               c.point.cex=input$biplot_12_c_point_cex,
+               e.point.col=input$biplot_12_e_point_col,
+               e.label.col=input$biplot_12_e_label_col,
+               c.point.col=input$biplot_12_c_point_col,
+               c.label.col=input$biplot_12_c_label_col,
+               mai=c(input$biplot_12_mai_bottom,
+                     input$biplot_12_mai_left,
+                     input$biplot_12_mai_top,
+                     input$biplot_12_mai_right) / 72,
+               var.cex=1)
+    }
+  }, 
+  width=function() input$biplot_12_plotsize,
+  height=function() input$biplot_12_plotsize)
   
 })
 
