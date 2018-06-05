@@ -76,15 +76,18 @@ cond.panel.bertin <-
   )
 
 
-#### __ Biplots ####
+#### __ Biplot ####
 
+
+#### ____ 2D  ####
+
+# choices in left panel
 choices.center <- c("No centering"=0,
                     "Row mean centering (construct)"=1,
                     "Column mean centering (elements)"=2,
                     "Double-centering (construct and element means)"=3,
                     "Midpoint centering of rows (constructs)"=4)
 choices.normalize <- c(none=0, rows=1, columns=2)
-
 biplot.element.selector.12 <- checkboxGroupInput("biplot_element_selector_12", 
                                                  "", isolate(values$e.names),
                                                  selected = isolate(values$e.names))
@@ -93,8 +96,7 @@ biplot.construct.selector.12 <- checkboxGroupInput("biplot_construct_selector_12
                                                    selected = isolate(values$c.names))
 
 
-#### ____ Biplots dim 1-2 ####
-
+# build left panel
 cond.panel.biplots.dim.12 <-
   conditionalPanel(condition="input.level1=='level1_biplot_standard' && input.level2_biplots=='level2_biplots_dim_12'",
                    h3("Biplots Settings", id="biplot_settings"),
@@ -193,7 +195,9 @@ level1.panel.bertin <-
 
 
 
-#### __ Biplots ####
+#### __ Biplot ####
+
+#### ____ 2D  ####
 
 level1.panel.biplots <- 
   tabPanel("Biplots", 

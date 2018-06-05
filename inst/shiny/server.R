@@ -106,6 +106,7 @@ shinyServer(function(input, output, session) {
   
   #### __ Load grids ####
   
+  # text in main panel on grid loading page
   output$load_grid <- renderUI({
     list(h3("Welcome to OpenRepGrid.app"),
          HTML("<p><i>OpenRepGrid.app</i> is an 
@@ -140,53 +141,66 @@ shinyServer(function(input, output, session) {
   
   #### __ Bertin ####
   
+  # info text on top aboce bertin plot
   output$bertin_info <- renderUI({
     HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/bertin.html") )  
   })
   
+  # produce bertin plot
   output$bertin <- renderPlot({
     cex <- 1.1
     x <- get_file()
     if (!is.null(x))
       bertin(x, 
-             cex.elements=input$bertin_standard_cex_all, 
-             cex.text=input$bertin_standard_cex_all,
-             cex.constructs=input$bertin_standard_cex_all,
-             colors=c(input$bertin_standard_color_left, input$bertin_standard_color_right),
-             showvalues=input$bertin_standard_showvalues,
-             xlim=c(input$bertin_standard_xlim_1, 1 - input$bertin_standard_xlim_2),
-             ylim = c(0, input$bertin_standard_ylim))
+             cex.elements=input$bertin_standard_cex_all,    # font size elements 
+             cex.text=input$bertin_standard_cex_all,        # font size cells
+             cex.constructs=input$bertin_standard_cex_all,  # font size constructs
+             colors=c(input$bertin_standard_color_left,     # colors of left and right pole
+                      input$bertin_standard_color_right),
+             showvalues=input$bertin_standard_showvalues,   # show ratings?
+             xlim=c(input$bertin_standard_xlim_1,           # left and right margins
+                    1 - input$bertin_standard_xlim_2),
+             ylim = c(0, input$bertin_standard_ylim))       # top margin for elements
   })
   
 
   
   #### __ Biplot ####
   
-  #### ____ Biplot Dim 1-2 ####
+  #### ____ 2D  ####
   
+  
+  # add infor text at top over biplot
   output$biplot_info <- renderUI({
     HTML( inject_info_on_top_of_ui_pages("biplot", "www/info/biplot.html"))  
   })
   
+  
+  # produce biplot
   output$biplot2d_12 <- renderPlot(
   {
     input$biplot_12_update_button_elements      # trigger rendering by button
     input$biplot_12_update_button_constructs    # trigger rendering by button
     x <- get_file() 
-    e.sel <- isolate(input$biplot_element_selector_12)
-    e.names <-isolate(values$e.names)    
-    e.i <- which(e.names %in% e.sel)
+    e.sel <- isolate(input$biplot_element_selector_12)   # get selected element names
+    e.names <-isolate(values$e.names)           # get elements names
+    e.i <- which(e.names %in% e.sel)            # get indexes of selected elements
     
-    c.sel <- isolate(input$biplot_construct_selector_12)
-    c.names <-isolate(values$c.names)    
-    c.i <- which(c.names %in% c.sel)
+    c.sel <- isolate(input$biplot_construct_selector_12)  # get selected construct names
+    c.names <-isolate(values$c.names)           # get construct labels
+    c.i <- which(c.names %in% c.sel)            # get indexes of selected construct
     
-    dim <- c(input$biplot_12_dim_1, input$biplot_12_dim_2)
-    flipaxes <- c(input$biplot_12_flipaxes_1, input$biplot_12_flipaxes_2)
+    dim <- c(input$biplot_12_dim_1,             # dimensions of bipot to display
+             input$biplot_12_dim_2)  
+    flipaxes <- c(input$biplot_12_flipaxes_1,   # flip x or y axis?
+                  input$biplot_12_flipaxes_2) 
+    # catch case when selected dimensions are the same
+    # which does not make a proper plot
     if (dim[1] == dim[2]) {
       plot.new()
       text(.5, .5, "dimensions can not be identical", cex=1.2)
     } else if (!is.null(x)) {
+    # produce 2D biplot
       biplot2d(x, 
                g=input$biplot_12_g, 
                dim=dim, 
@@ -212,7 +226,7 @@ shinyServer(function(input, output, session) {
                var.cex=1)
     }
   }, 
-  width=function() input$biplot_12_plotsize,
+  width=function() input$biplot_12_plotsize,   # width and height can be changed interactively
   height=function() input$biplot_12_plotsize)
   
 })

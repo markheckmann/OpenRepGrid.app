@@ -14,7 +14,7 @@ See \link[shiny]{runApp}.}
 See \link[shiny]{runApp}.}
 }
 \description{
-This function starts the OpenRepGrid GUI app.
+This function starts the OpenRepGrid app.
 }
 \examples{
 \dontrun{
