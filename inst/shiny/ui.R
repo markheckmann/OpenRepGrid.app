@@ -167,6 +167,27 @@ cond.panel.biplots.dim.12 <-
 
 
 
+#### __ Constructs ####
+
+#### ____ Correlations ####
+
+
+cond.panel.constructs.correlation <- 
+  conditionalPanel(condition="input.level1=='level1_constructs' && input.level2_constructs=='level2_construct_correlation'",
+                   h3("Correlation Settings"),
+                   selectInput("constructs_correlation_method", 
+                               label="Correlation Method",
+                               c("pearson", "kendall", "spearman"),
+                               selectize=FALSE),
+                   numericInput("constructs_correlation_trim", 
+                                label="Trim construct names to x characters", 
+                                value = 20, min = 0, max = 100, step = 5),
+                   checkboxInput("constructs_correlation_rms", 
+                                 "Calculate Root-means-square correlations (RMS)", 
+                                 TRUE)
+  )
+
+
 #### ______________________ ####
 #### MAIN PANELS ####
 
@@ -217,6 +238,24 @@ level1.panel.biplots <-
 
 
 
+#### __ Constructs ####
+
+# all construct analyses
+level1.panel.constructs <- 
+  tabPanel("Constructs", 
+           tabsetPanel(
+             tabPanel("Correlations", verbatimTextOutput("construct_correlation"), 
+                      verbatimTextOutput("construct_correlation_rms"), value="level2_construct_correlation"),
+             tabPanel("Distances", verbatimTextOutput("construct_distance"), value="level2_construct_distance"), 
+             tabPanel("Cluster", plotOutput("construct_cluster", width="600px", height="600px"), value="level2_construct_cluster"), 
+             tabPanel("Cluster (bootstrapped)", plotOutput("construct_clusterboot", width="600px", height="600px"), value="level2_construct_clusterboot"),             
+             tabPanel("PCA", verbatimTextOutput("construct_pca"), value="level2_construct_pca"),
+             tabPanel("Somers' d", verbatimTextOutput("construct_somers"), value="level2_construct_somers"), 
+             id="level2_constructs"),
+           value="level1_constructs")
+
+
+
 #### ______________________ ####
 #### IU DEFINITION ####
 
@@ -236,6 +275,8 @@ shinyUI(pageWithSidebar(
     cond.panel.bertin,
     ## Biplots ##
     cond.panel.biplots.dim.12,
+    ## Constrcts ##
+    cond.panel.constructs.correlation,
     
     
     ## toggle tooltips button ##
@@ -265,6 +306,7 @@ shinyUI(pageWithSidebar(
         level1.panel.settings,
         level1.panel.bertin,
         level1.panel.biplots,
+        level1.panel.constructs,
         id="level1"
     )
   )

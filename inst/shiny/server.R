@@ -229,6 +229,35 @@ shinyServer(function(input, output, session) {
   width=function() input$biplot_12_plotsize,   # width and height can be changed interactively
   height=function() input$biplot_12_plotsize)
   
+  
+  
+  #### __ Constructs ####
+  
+  
+  #### ____ Correlation ####
+  
+  # simple correlations
+  output$construct_correlation <- renderPrint({
+    x <- get_file()
+    if (!is.null(x)) {
+      constructCor(x, 
+                   method = input$constructs_correlation_method,   # pearons, spearman, kendall
+                   trim = input$constructs_correlation_trim)    
+    }    
+  })
+  
+  
+  # RMS correlation
+  output$construct_correlation_rms <- renderPrint({
+    x <- get_file()
+    if (!is.null(x) & input$constructs_correlation_rms) {
+      constructRmsCor(x,  
+                      method = input$constructs_correlation_method, # pearons, spearman, kendall
+                      trim = input$constructs_correlation_trim)      
+    }    
+  })
+  
+  
 })
 
 
