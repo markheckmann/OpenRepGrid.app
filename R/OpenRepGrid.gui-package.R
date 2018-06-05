@@ -15,7 +15,7 @@ NULL
 
 #' Run OpenRepGrid.app
 #'
-#' This function starts the OpenRepGrid GUI app.
+#' This function starts the OpenRepGrid app.
 #' 
 #' @param display.mode \code{auto} by default, can also be \code{showcase}.
 #' See \link[shiny]{runApp}.
