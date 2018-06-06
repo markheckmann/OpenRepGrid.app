@@ -167,6 +167,16 @@ cond.panel.biplots.dim.12 <-
 
 
 
+#### ____ 3D  ####
+
+cond.panel.biplots.dim.3d <- 
+  conditionalPanel(condition="input.level1=='level1_biplot_standard' && input.level2_biplots=='level2_biplots_3d'",
+                   h3("Biplots Settings"),
+                   sliderInput("biplot3d_size", "Size of plot:", 
+                               value = 650, min=400, max=1000, step=25)
+  )
+
+
 #### __ Constructs ####
 
 #### ____ Correlations ####
@@ -218,23 +228,28 @@ level1.panel.bertin <-
 
 #### __ Biplot ####
 
-#### ____ 2D  ####
+
+#### ____ 2D + 3D  ####
 
 level1.panel.biplots <- 
   tabPanel("Biplots", 
            tabsetPanel(
-             tabPanel("2D", 
+             # 2D
+              tabPanel("2D", 
                       htmlOutput("biplot_info"),
                       plotOutput("biplot2d_12", width="auto", height="auto"), 
                       value="level2_biplots_dim_12"),
-             # tabPanel("3D", 
-             #          reactiveWebGL(outputId = "webGL"), 
-             #          value="level2_biplots_3d"),
-             # tabPanel("3D2", 
-             #          rgl::rglwidgetOutput("rglPlot"),
-             #          value="level2_biplots_3d2"),
-             id="level2_biplots"),
-           value="level1_biplot_standard")
+              # 3D
+              tabPanel("3D",
+                      # rgl::rglwidgetOutput("biplot_3d", 
+                      #                      width = "600px", 
+                      #                      height = "600px"),
+                      uiOutput("bp3d"),
+                      value="level2_biplots_3d"),
+           id="level2_biplots"),
+  value="level1_biplot_standard")
+
+
 
 
 
@@ -256,6 +271,8 @@ level1.panel.constructs <-
 
 
 
+
+
 #### ______________________ ####
 #### IU DEFINITION ####
 
@@ -274,7 +291,8 @@ shinyUI(pageWithSidebar(
     ## Bertin ##
     cond.panel.bertin,
     ## Biplots ##
-    cond.panel.biplots.dim.12,
+    cond.panel.biplots.dim.12,   # 2D
+    cond.panel.biplots.dim.3d,   # 3D
     ## Constrcts ##
     cond.panel.constructs.correlation,
     

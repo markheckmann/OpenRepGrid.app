@@ -230,6 +230,44 @@ shinyServer(function(input, output, session) {
   height=function() input$biplot_12_plotsize)
   
   
+  #### ____ 3D ####
+
+  # render 3D rgl widget
+  output$biplot_3d <- rgl::renderRglwidget(
+  {
+    options(rgl.usuNULL = TRUE)
+    save <- options(rgl.inShiny = TRUE)
+    on.exit(options(save))
+    
+    #values$trigger_3d
+    input$biplot3d_size   # trigger rendering on size change
+
+    x <- get_file()
+    if (!is.null(x)) 
+    {
+      try(rgl.close())
+      biplot3d(x, c.text.col = "#0000ff")  # TODO: strange colors
+      view3d(theta = 0, phi = 0, zoom = .8)
+      scene <- rgl::scene3d()
+      rgl::rglwidget(scene)
+    }
+  })
+  
+  
+  # render UI in server using several inputs
+  # TODO: add button to update plot by user like in 2d plot
+  #
+  output$bp3d <- renderUI(
+  {
+   # values$trigger_3d <- values$trigger_3d + 1
+    size <- input$biplot3d_size  # trgger size change
+    size_px <- paste0(size,"px")
+    rgl::rglwidgetOutput("biplot_3d",
+                         width = size_px, #"600px",
+                         height = size_px) #"600px")
+  })
+  
+
   
   #### __ Constructs ####
   
