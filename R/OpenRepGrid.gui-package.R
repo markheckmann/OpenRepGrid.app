@@ -28,8 +28,7 @@ NULL
 #' @import shinyBS
 #' @import stringr
 #' @import OpenRepGrid
-#' @import rgl
-#' 
+
 #' @examples
 #' \dontrun{
 #' OpenRepGrid.app()
