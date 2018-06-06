@@ -174,6 +174,10 @@ cond.panel.biplots.dim.3d <-
                    h3("Biplots Settings"),
                    sliderInput("biplot3d_size", "Size of plot:", 
                                value = 650, min=400, max=1000, step=25)
+                   # checkboxInput("biplot_3d_toggle_construct_labels", 
+                   #              "Constructs labels On/off", TRUE),
+                   # checkboxInput("biplot_3d_toggle_element_labels", 
+                   #              "Element labels On/off", TRUE)
   )
 
 
@@ -196,6 +200,236 @@ cond.panel.constructs.correlation <-
                                  "Calculate Root-means-square correlations (RMS)", 
                                  TRUE)
   )
+
+
+#### ____ Distances ####
+
+cond.panel.constructs.distance <- 
+  conditionalPanel(condition="input.level1=='level1_constructs' && input.level2_constructs=='level2_construct_distance'",
+                   h3("Distance Settings"),
+                   selectInput("constructs_distance_dmethod", label="Distance Method",
+                               c("euclidean", "maximum", "manhattan", "canberra"),
+                               selectize=FALSE),
+                   numericInput("constructs_distance_trim", label="Trim construct names to x characters", 
+                                50, 0, 100, 5),
+                   numericInput("constructs_distance_digits", label="Number of digits to display", 
+                                1, 0, 10, 1)
+  )
+
+
+#### ____ Cluster ####
+
+cond.panel.constructs.cluster <- 
+  conditionalPanel(condition="input.level1=='level1_constructs' && input.level2_constructs=='level2_construct_cluster'",
+                   h3("Cluster Settings"),
+                   selectInput("constructs_cluster_dmethod", label="Distance Method",
+                               c("euclidean", "maximum", "manhattan", "canberra"),
+                               selectize=FALSE),
+                   selectInput("constructs_cluster_cmethod", label="Correlation Method",
+                               c("ward", "single", "complete", "average", "mcquitty"),
+                               selectize=FALSE),
+                   checkboxInput("constructs_cluster_align", label="Reverse constructs if necessary", TRUE),
+                   selectInput("constructs_cluster_type", label="Dendrogram style",
+                               c("rectangle", "triangle"),
+                               selectize=FALSE)
+  )
+
+
+#### ____ Cluster Boot ####
+
+cond.panel.constructs.clusterboot <- 
+  conditionalPanel(condition="input.level1=='level1_constructs' && input.level2_constructs=='level2_construct_clusterboot'",
+                   h3("Cluster (bootstrapped) Settings"),
+                   tags$button("Run analysis", id="constructs_clusterboot_update_button", type="button", class="btn action-button btn-success"),
+                   #actionButton("constructs_clusterboot_update_button", "Run analysis"),
+                   HTML("<hr>"),
+                   HTML("<p>Bootstrapped cluster anaylysis will yield the same",
+                        "dendrogram as conventional clustering. Additionally, it",
+                        "will report a p-values as a measure of the stability for each cluster partition.</p>",
+                        "<p><font color='red'><b>Depending on the number of bootstrap replicates the analysis may take some time to complete.</b></font>",
+                        "Meanwhile you will not see anything on the screen.",
+                        "Running the analysis with the default settings will need about ",
+                        "10 seconds of calculation time.</p>"),
+                   HTML("<hr>"),
+                   selectInput("constructs_clusterboot_dmethod", label="Distance Method",
+                               c("euclidean", "maximum", "manhattan", "canberra"),
+                               selectize=FALSE),
+                   selectInput("constructs_clusterboot_cmethod", label="Correlation Method",
+                               c("ward", "single", "complete", "average", "mcquitty"),
+                               selectize=FALSE),
+                   checkboxInput("constructs_clusterboot_align", label="Reverse constructs if necessary", TRUE),
+                   numericInput("constructs_clusterboot_nboot", "Number of bootstrap replicates", 500, 100, 10000, 100),
+                   HTML("<hr>"),                
+                   numericInput("constructs_clusterboot_alpha", "Threshold for p-values", .95, 0, 1, .01),
+                   checkboxInput("constructs_clusterboot_drawrects", label="Draw rectangles around stable structures", TRUE),
+                   checkboxInput("constructs_clusterboot_maxonly", label="Top level stable structures only", FALSE)
+  )
+
+
+
+#### ____ PCA ####
+
+cond.panel.constructs.pca <- 
+  conditionalPanel(condition="input.level1=='level1_constructs' && input.level2_constructs=='level2_construct_pca'",
+                   h3("PCA Settings"),
+                   numericInput("constructs_pca_nfactors", label="Number of Pricipal Components (PCs)", 
+                                4, 1, 20, 1) ,
+                   selectInput("constructs_pca_rotate", label="Rotation type",
+                               c("none", "varimax", "promax"), "varimax",
+                               selectize=FALSE),
+                   selectInput("constructs_pca_correlation", label="Correlation Method",
+                               c("pearson", "kendall", "spearman"),
+                               selectize=FALSE),
+                   numericInput("constructs_pca_trim", label="Trim construct names to x characters", 
+                                60, 0, 100, 5),
+                   numericInput("constructs_pca_digits", label="Number of digits to display", 
+                                2, 0, 10, 1),
+                   numericInput("constructs_pca_cutoff", label="Minimum loading to print", 
+                                .3, 0, 1, .01) 
+  )
+
+
+#### ____ Somers' d ####
+
+
+cond.panel.constructs.somers <- 
+  conditionalPanel(condition="input.level1=='level1_constructs' && input.level2_constructs=='level2_construct_somers'",
+                   h3("Somers' d"),
+                   selectInput("constructs_somers_dependent", label="Dependent side",
+                               c("columns", "rows", "symmetric"),
+                               selectize=FALSE),
+                   numericInput("constructs_somers_trim", label="Trim construct names to x characters", 
+                                20, 0, 100, 5),
+                   numericInput("constructs_somers_digits", label="Number of digits to display", 
+                                2, 0, 10, 1)
+  )
+
+
+
+
+
+#### __ Elements ####
+
+#### ____ Correlations ####
+
+
+cond.panel.elements.correlation <- 
+  conditionalPanel(condition="input.level1=='level1_elements' && input.level2_elements=='level2_elements_correlation'",
+                   h3("Correlation Settings"),
+                   selectInput("elements_correlation_method", label="Correlation Method",
+                               c("pearson", "kendall", "spearman"),
+                               selectize=FALSE),
+                   checkboxInput("elements_correlation_rc", "Use Cohen's rc (invariant to construct reflection)", TRUE),
+                   numericInput("elements_correlation_trim", label="Trim element names to x characters", 
+                                15, 0, 100, 5),
+                   checkboxInput("elements_correlation_rms", "Calculate Root-means-square correlations (RMS)", TRUE)
+  )
+
+
+
+#### ____ Cluster ####
+
+cond.panel.elements.cluster <- 
+  conditionalPanel(condition="input.level1=='level1_elements' && input.level2_elements=='level2_elements_cluster'",
+                   h3("Cluster Settings"),
+                   selectInput("elements_cluster_dmethod", label="Distance Method",
+                               c("euclidean", "maximum", "manhattan", "canberra"),
+                               selectize=FALSE),
+                   selectInput("elements_cluster_cmethod", label="Correlation Method",
+                               c("ward", "single", "complete", "average", "mcquitty"),
+                               selectize=FALSE),
+                   selectInput("elements_cluster_type", label="Dendrogram style",
+                               c("rectangle", "triangle"),
+                               selectize=FALSE)
+  )
+
+
+#### ____ Cluster (bootstrapped) ####
+
+cond.panel.elements.clusterboot <- 
+  conditionalPanel(condition="input.level1=='level1_elements' && input.level2_elements=='level2_elements_clusterboot'",
+                   h3("Cluster (bootstrapped) Settings"),
+                   actionButton("elements_clusterboot_update_button", "Run analysis"),
+                   HTML("<hr>"),
+                   HTML("<p>Bootstrapped cluster anaylysis will yield the same",
+                        "dendrogram as conventional clustering. Additionally, it",
+                        "will report a p-values as a measure of the stability for each cluster partition.</p>",
+                        "<p><font color='red'><b>Depending on the number of bootstrap replicates the analysis may take some time to complete.</b></font>",
+                        "Meanwhile you will not see anything on the screen.",
+                        "Running the analysis with the default settings will need about ",
+                        "10 seconds of calculation time.</p>"),
+                   HTML("<hr>"),
+                   selectInput("elements_clusterboot_dmethod", label="Distance Method",
+                               c("euclidean", "maximum", "manhattan", "canberra"),
+                               selectize=FALSE),
+                   selectInput("elements_clusterboot_cmethod", label="Correlation Method",
+                               c("ward", "single", "complete", "average", "mcquitty"),
+                               selectize=FALSE),
+                   numericInput("elements_clusterboot_nboot", "Number of bootstrap replicates", 500, 100, 10000, 100),
+                   HTML("<hr>"),                
+                   numericInput("elements_clusterboot_alpha", "Threshold for p-values", .95, 0, 1, .01),
+                   checkboxInput("elements_clusterboot_drawrects", label="Draw rectangles around stable structures", TRUE),
+                   checkboxInput("elements_clusterboot_maxonly", label="Top level stable structures only", FALSE)
+  )
+
+
+#### ____ Distance ####
+
+cond.panel.elements.distance <- 
+  conditionalPanel(condition="input.level1=='level1_elements' && input.level2_elements=='level2_elements_distance'",
+                   h3("Distance Settings"),
+                   selectInput("elements_distance_dmethod", label="Distance Method",
+                               c("euclidean", "maximum", "manhattan", "canberra"),
+                               selectize=FALSE),
+                   numericInput("elements_distance_trim", label="Trim element names to x characters", 
+                                50, 0, 100, 5),
+                   numericInput("elements_distance_digits", label="Number of digits to display", 
+                                1, 0, 10, 1)
+  )
+
+
+
+
+#### __ Indexes ####
+
+
+#### ____ PVAFF ####
+
+cond.panel.indexes.pvaff <- 
+  conditionalPanel(condition="input.level1=='level1_indexes' && input.level2_indexes=='level2_indexes_pvaff'",
+                   h3("PVAFF"),
+                   HTML("<p>Percentage of Variance Accounted for by First Factor</p>")
+  )
+
+
+#### ____ Implicative Dilemmas ####
+
+cond.panel.indexes.implicative.dilemma <- 
+  conditionalPanel(condition="input.level1=='level1_indexes' && input.level2_indexes=='level2_indexes_implicative_dilemma'",
+                   h3("Implicative Dilemmas"),
+                   selectInput("indexes_implicative_dilemma_self", 
+                               "Self element", isolate(values$e.names),
+                               selectize=FALSE),
+                   selectInput("indexes_implicative_dilemma_ideal", 
+                               "Ideal element", isolate(values$e.names), 
+                               isolate(values$e.names)[2],
+                               selectize=FALSE),
+                   numericInput("indexes_implicative_dilemmas_rmin", label="Minimal correlation to assume implications between constructs", 
+                                .35, 0, 1, .01),
+                   checkboxInput("indexes_implicative_dilemmas_show", label="Show correlation distribution", TRUE)
+  )
+
+
+#### ____ Intensity ####
+
+cond.panel.indexes.intensity <- 
+  conditionalPanel(condition="input.level1=='level1_indexes' && input.level2_indexes=='level2_indexes_intensity'",
+                   h3("Intensity Index"),
+                   HTML("The Intensity index has been suggested by Bannister (1960) 
+                         as a measure of the amount of construct linkage.")
+  )
+
+
 
 
 #### ______________________ ####
@@ -227,9 +461,6 @@ level1.panel.bertin <-
 
 
 #### __ Biplot ####
-
-
-#### ____ 2D + 3D  ####
 
 level1.panel.biplots <- 
   tabPanel("Biplots", 
@@ -270,6 +501,35 @@ level1.panel.constructs <-
            value="level1_constructs")
 
 
+#### __ Elements ####
+
+level1.panel.elements <- 
+  tabPanel("Elements", 
+           tabsetPanel(
+             tabPanel("Correlations", 
+                      verbatimTextOutput("elements_correlation"), 
+                      verbatimTextOutput("elements_correlation_rms"), 
+                      value="level2_elements_correlation"),
+             tabPanel("Distances", verbatimTextOutput("elements_distance"), value="level2_elements_distance"),
+             tabPanel("Cluster", plotOutput("elements_cluster", width="600px", height="600px"), value="level2_elements_cluster"), 
+             tabPanel("Cluster (bootstrapped)", plotOutput("elements_clusterboot", width="600px", height="600px"), value="level2_elements_clusterboot"),             
+             id="level2_elements"),
+           value="level1_elements")
+
+
+#### __ Indexes ####
+
+level1.panel.indexes <- 
+  tabPanel("Indexes", 
+           tabsetPanel(
+             tabPanel("PVAFF", verbatimTextOutput("indexes_pvaff"), value="level2_indexes_pvaff"),
+             tabPanel("Implicative Dilemma", 
+                      verbatimTextOutput("indexes_implicative_dilemma"), 
+                      plotOutput("indexes_implicative_dilemma_plot", width="600px", height="600px"),
+                      value="level2_indexes_implicative_dilemma"),
+             tabPanel("Intensity", verbatimTextOutput("indexes_intensity"), value="level2_indexes_intensity"),
+             id="level2_indexes"),
+           value="level1_indexes")
 
 
 
@@ -288,14 +548,32 @@ shinyUI(pageWithSidebar(
     
     ## Settings ##
     cond.panel.settings,
+    
     ## Bertin ##
     cond.panel.bertin,
+    
     ## Biplots ##
     cond.panel.biplots.dim.12,   # 2D
     cond.panel.biplots.dim.3d,   # 3D
-    ## Constrcts ##
-    cond.panel.constructs.correlation,
     
+    ## Constructs ##
+    cond.panel.constructs.correlation,
+    cond.panel.constructs.distance,
+    cond.panel.constructs.cluster,
+    cond.panel.constructs.clusterboot,
+    cond.panel.constructs.pca,
+    cond.panel.constructs.somers,
+    
+    ## elements ##
+    cond.panel.elements.correlation,
+    cond.panel.elements.cluster,
+    cond.panel.elements.clusterboot,
+    cond.panel.elements.distance,
+    
+    ## indexes ##
+    cond.panel.indexes.pvaff,
+    cond.panel.indexes.implicative.dilemma,
+    cond.panel.indexes.intensity,
     
     ## toggle tooltips button ##
     HTML("<hr>"),
@@ -325,6 +603,8 @@ shinyUI(pageWithSidebar(
         level1.panel.bertin,
         level1.panel.biplots,
         level1.panel.constructs,
+        level1.panel.elements,
+        level1.panel.indexes,
         id="level1"
     )
   )

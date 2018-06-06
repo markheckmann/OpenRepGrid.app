@@ -14,7 +14,7 @@ Description:
     user interface (GUI) that allows analyzing and visualizing grid data.
     Under the hood, the GUI uses functions from the OpenRepGrid package 
     (<https://CRAN.R-project.org/package=OpenRepGrid>).
-Version: 0.1.3
+Version: 0.1.4
 Date: 2018-06-06
 Imports:
     shiny,

@@ -64,12 +64,12 @@ shinyServer(function(input, output, session) {
     updateCheckboxGroupInput(session, "biplot_construct_selector_12", 
                              label="",  choices=values$c.names, 
                              selected=values$c.names) 
-    # updateSelectInput(session, "indexes_implicative_dilemma_ideal", 
-    #                   label="Ideal element",  choices=values$e.names, 
-    #                   selected=values$e.names[1]) 
-    # updateSelectInput(session, "indexes_implicative_dilemma_self", 
-    #                   label="Self element",  choices=values$e.names, 
-    #                   selected=values$e.names[2]) 
+    updateSelectInput(session, "indexes_implicative_dilemma_ideal",
+                      label="Ideal element",  choices=values$e.names,
+                      selected=values$e.names[1])
+    updateSelectInput(session, "indexes_implicative_dilemma_self",
+                      label="Self element",  choices=values$e.names,
+                      selected=values$e.names[2])
   })
   
   # update element selection
@@ -246,7 +246,10 @@ shinyServer(function(input, output, session) {
     if (!is.null(x)) 
     {
       try(rgl.close())
-      biplot3d(x, c.text.col = "#0000ff")  # TODO: strange colors
+      biplot3d(x, 
+               c.text.col = "#0000ff", 
+               c.cex = .7,
+               e.cex = .7)  
       view3d(theta = 0, phi = 0, zoom = .8)
       scene <- rgl::scene3d()
       rgl::rglwidget(scene)
@@ -267,7 +270,6 @@ shinyServer(function(input, output, session) {
                          height = size_px) #"600px")
   })
   
-
   
   #### __ Constructs ####
   
@@ -294,6 +296,221 @@ shinyServer(function(input, output, session) {
                       trim = input$constructs_correlation_trim)      
     }    
   })
+  
+  
+  #### ____ Distance ####
+  
+  output$construct_distance <- renderPrint({
+    x <- get_file()
+    if (!is.null(x)) {
+      d <- distance(x, along=1,
+                    dmethod=input$constructs_distance_dmethod, 
+                    trim=input$constructs_distance_trim)    
+      print(d, digits=input$constructs_distance_digits)
+    }     
+  })
+  
+  
+  #### ____ Cluster ####
+  
+  output$construct_cluster <- renderPlot({
+    x <- get_file()
+    if (!is.null(x))
+      cluster(x, 1, 
+              dmethod=input$constructs_cluster_dmethod,  # distance measure
+              cmethod=input$constructs_cluster_cmethod,  # cluster method
+              type = input$constructs_cluster_type, 
+              align=input$constructs_cluster_align,
+              lab.cex=1.2, 
+              mar=c(4, 2, 3, 20), 
+              cex.main=1.2)
+  })
+  
+  
+  #### ____ Cluster Boot ####
+  
+  # wird einmal automatisch aufgerufen, bei initialisierung
+  observe({
+    i <- input$constructs_clusterboot_update_button
+    #cat("constructs_clusterboot_update_button:", i)
+    x <- isolate(get_file())
+    s <- NULL
+    if (!is.null(x) & i > 0)
+      s <- clusterBoot(x, along=1,
+                       align=input$constructs_clusterboot_align,
+                       nboot=isolate(input$constructs_clusterboot_nboot),
+                       dmethod=isolate(input$constructs_clusterboot_dmethod),
+                       cmethod=isolate(input$constructs_clusterboot_cmethod)) 
+    values$constructs_clusterboot <- s
+  })
+  
+  output$construct_clusterboot <- renderPlot({
+    s <- values$constructs_clusterboot
+    if (!is.null(s)) {
+      plot(s)
+      if (input$constructs_clusterboot_drawrects){
+        pvclust::pvrect(s, max.only=input$constructs_clusterboot_maxonly,
+                        alpha=input$constructs_clusterboot_alpha)
+      }       
+    } else {
+      plot.new()
+      text(.5, .5, "Analysis not yet prompted", cex=1.3)
+    }
+  })
+  
+  
+  #### ____ PCA ####
+  
+  output$construct_pca <- renderPrint({
+    x <- get_file()
+    if (!is.null(x)) {
+      pca <- constructPca(x, nfactors = input$constructs_pca_nfactors, 
+                          rotate = input$constructs_pca_rotate,
+                          method = input$constructs_pca_correlation,
+                          trim = input$constructs_pca_trim)  
+      print(pca, digits=input$constructs_pca_digits,
+            cutoff=input$constructs_pca_cutoff)
+    }
+  })
+  
+  
+  #### ____ Somers' d ####
+  
+  output$construct_somers <- renderPrint({
+    x <- get_file()
+    if (!is.null(x)) {
+      d <- constructD(x, dependent=input$constructs_somers_dependent, 
+                      trim=input$constructs_somers_trim)    
+      print(d, digits=input$constructs_somers_digits)
+    }     
+  })
+  
+  
+  
+  
+  #### __ Elements ####
+  
+  
+  #### ____ Correlation ####
+  
+  output$elements_correlation <- renderPrint({
+    x <- get_file()
+    if (!is.null(x)) {
+      elementCor(x, rc=input$elements_correlation_rc, 
+                 method=input$elements_correlation_method, 
+                 trim=input$elements_correlation_trim)    
+    }    
+  })
+  
+  
+  output$elements_correlation_rms <- renderPrint({
+    x <- get_file()
+    if (!is.null(x) & input$elements_correlation_rms) {
+      elementRmsCor(x,
+                    rc=input$elements_correlation_rc,
+                    method=input$elements_correlation_method, 
+                    trim=input$elements_correlation_trim)      
+    }    
+  })
+  
+  
+  #### ____ Distance ####
+  
+  output$elements_distance <- renderPrint({
+    x <- get_file()
+    if (!is.null(x)) {
+      d <- distance(x, along=2,
+                    dmethod=input$elements_distance_dmethod, 
+                    trim=input$elements_distance_trim)    
+      print(d, digits=input$elements_distance_digits)
+    }     
+  })
+  
+  
+  #### ____ Cluster ####
+  
+  output$elements_cluster <- renderPlot({
+    x <- get_file()
+    if (!is.null(x))
+      cluster(x, along=2, 
+              dmethod=input$elements_cluster_dmethod,
+              cmethod=input$elements_cluster_cmethod,
+              type = input$elements_cluster_type, 
+              lab.cex=1.2, mar=c(4, 2, 3, 20), cex.main=1.2)
+  })
+  
+  
+  #### ____ Cluster (bootstrapped) ####
+  
+  # wird einmal automatisch aufgerufen, bei initialisierung
+  observe({
+    input$elements_clusterboot_update_button
+    x <- isolate(get_file())
+    s <- NULL
+    if (!is.null(x))
+      s <- clusterBoot(x, along=2,
+                       nboot=isolate(input$elements_clusterboot_nboot),
+                       dmethod=isolate(input$elements_clusterboot_dmethod),
+                       cmethod=isolate(input$elements_clusterboot_cmethod)) 
+    values$elements_clusterboot <- s
+  })
+  
+  
+  output$elements_clusterboot <- renderPlot({
+    s <- values$elements_clusterboot
+    if (!is.null(s)) {
+      plot(s)
+      if (input$elements_clusterboot_drawrects){
+        pvclust::pvrect(s, 
+                        max.only=input$elements_clusterboot_maxonly,
+                        alpha=input$elements_clusterboot_alpha)
+      }       
+    } else {
+      plot.new()
+      text(.5, .5, "Analysis not yet prompted", cex=1.3)
+    }
+  })
+  
+  
+  #### __ Indexes ####
+  
+  #### ____ PVAFF ####
+  
+  output$indexes_pvaff <- renderPrint({
+    x <- get_file()
+    if (!is.null(x))
+      indexPvaff(x)
+  })
+  
+  
+  #### ____ Implicative Dilemma ####
+  
+  output$indexes_implicative_dilemma <- renderPrint({
+    x <- get_file()
+    self <- which(values$e.names %in% input$indexes_implicative_dilemma_self)
+    ideal <- which(values$e.names %in% input$indexes_implicative_dilemma_ideal)
+    if (!is.null(x))
+      indexDilemma(x, self=self, ideal=ideal, 
+                   r.min=input$indexes_implicative_dilemmas_rmin)
+  })
+  
+  output$indexes_implicative_dilemma_plot <- renderPlot({
+    x <- get_file()
+    self <- which(values$e.names %in% input$indexes_implicative_dilemma_self)
+    ideal <- which(values$e.names %in% input$indexes_implicative_dilemma_ideal)
+    if (!is.null(x) & input$indexes_implicative_dilemmas_show)
+      indexDilemma(x, self=self, ideal=ideal, 
+                   show=TRUE, output=0)
+  })
+  
+  #### ____ Intensity ####
+  
+  output$indexes_intensity <- renderPrint({
+    x <- get_file()
+    if (!is.null(x))
+      indexIntensity(x)
+  })
+  
   
   
 })
