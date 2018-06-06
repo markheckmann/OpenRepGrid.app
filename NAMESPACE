@@ -2,6 +2,7 @@
 
 export(OpenRepGrid.app)
 import(OpenRepGrid)
+import(rgl)
 import(shiny)
 import(shinyBS)
 import(shinythemes)
