@@ -55,25 +55,60 @@ cond.panel.settings <-
 
 #### __ Bertin ####
 
-cond.panel.bertin <- 
+
+# build left panel
+cond.panel.bertin <-
   conditionalPanel(condition="input.level1=='bertin_standard'",
-                   h3("Bertin Settings", id="bertin_settings"),
-                   tags$div(checkboxInput("bertin_standard_showvalues", "Show values", value = TRUE),
-                            id="bertin_standard_showvalues_wrapper_div", style="display:inline-block;"),
-                   numericInput("bertin_standard_cex_all", "Textsize", 1.1, min = .1, max = 2,
-                                step = .05),
-                   span(numericInput("bertin_standard_xlim_1", "Space constructs left", .2, min = 0, max = 1,
-                                     step = .02),
-                        numericInput("bertin_standard_xlim_2", "Space constructs right", .2, min = 0, max = 1,
-                                     step = .02)),
-                   numericInput("bertin_standard_ylim", "Size element region", .6, min = 0, max = 1,
-                                step = .05),
-                   span(selectInput("bertin_standard_color_left", "Color left pole", 
-                                    choices=colors.all, selected="white", selectize=FALSE),
-                        selectInput("bertin_standard_color_right", "Color right pole", 
-                                    choices=colors.all, selected="darkblue", selectize=FALSE)
-                   )        
-  )
+                   h3("Bertin", id="bertin_settings"),
+                   tabsetPanel(id="tabets_bertin",
+                     tabPanel("Settings", value ="tab_bertin_settings",
+                              tags$div(checkboxInput("bertin_standard_showvalues", "Show values", value = TRUE),
+                                       id="bertin_standard_showvalues_wrapper_div",
+                                       style="display:inline-block;"),
+                              numericInput("bertin_standard_cex_all", "Textsize", 1.1,
+                                           min = .1, max = 2, step = .05),
+                              span(numericInput("bertin_standard_xlim_1", "Space constructs left", .2,
+                                                min = 0, max = 1, step = .02),
+                                   numericInput("bertin_standard_xlim_2", "Space constructs right", .2,
+                                                min = 0, max = 1, step = .02)
+                              ),
+                              numericInput("bertin_standard_ylim", "Size element region", .4,
+                                           min = 0, max = 1, step = .05),
+                              span(selectInput("bertin_standard_color_left", "Color left pole",
+                                               choices=colors.all, selected="white",
+                                               selectize=FALSE),
+                                   selectInput("bertin_standard_color_right", "Color right pole",
+                                               choices=colors.all, selected="darkblue",
+                                               selectize=FALSE)
+                              )
+                    ),
+                   tabPanel("Change", value = "panel_bertin_modify",
+                            # move cursor
+                            tags$h4("Move cursor"),
+                            actionButton("btn_up", "", icon("arrow-up", "fa-2x"), width = "99%"),
+                            tags$br(),
+                            actionButton("btn_left", "", icon("arrow-left", "fa-2x"), width = "49%"),
+                            actionButton("btn_right", "", icon("arrow-right", "fa-2x"), width = "49%"),
+                            tags$br(),
+                            actionButton("btn_down", "", icon("arrow-down", "fa-2x"), width = "99%"),
+                            # move constructs and elements
+                            tags$h4("Move constructs and elements"),
+                            actionButton("btn_move_up", "", icon("angle-double-up", "fa-2x"), width = "99%"),
+                            tags$br(),
+                            actionButton("btn_move_left", "", icon("angle-double-left", "fa-2x"), width = "49%"),
+                            actionButton("btn_move_right", "", icon("angle-double-right", "fa-2x"), width = "49%"),
+                            tags$br(),
+                            actionButton("btn_move_down", "", icon("angle-double-down", "fa-2x"), width = "99%"),
+                            # modify grid
+                            tags$hr(),
+                            tags$h4("Modify grid"),
+                            actionButton("btn_swap_poles", " Swap poles", icon("exchange", "fa-2x"), width = "99%"),
+                            actionButton("btn_delete_construct", " Delete construct", icon("minus-square", "fa-2x"), width = "99%"),
+                            actionButton("btn_delete_element", " Delete element", icon("minus-square", "fa-2x"), width = "99%")
+                  )
+            )
+)
+
 
 
 #### __ Biplot ####
@@ -452,6 +487,7 @@ level1.panel.bertin <-
            # collapsable info box 
            # requires js.js and styles.css from /www to be read in.
            # done in main panel 
+
            htmlOutput("bertin_info"),  
            # bertin plot 
            plotOutput("bertin", width="600px", height="600px"),  
@@ -537,8 +573,9 @@ level1.panel.indexes <-
 #### IU DEFINITION ####
 
 
-shinyUI(pageWithSidebar(
-  
+ # shinyUI(pageWithSidebar(
+shinyUI(fluidPage(
+  theme = shinythemes::shinytheme("united"),
   headerPanel("OpenRepGrid.app"),
   
   
@@ -551,6 +588,7 @@ shinyUI(pageWithSidebar(
     
     ## Bertin ##
     cond.panel.bertin,
+    # cond.panel.bertin.new,
     
     ## Biplots ##
     cond.panel.biplots.dim.12,   # 2D
@@ -583,6 +621,7 @@ shinyUI(pageWithSidebar(
              style="float: left;"),
     HTML("<br>")
   ),
+  
   
   
   #### __ Main panel ####

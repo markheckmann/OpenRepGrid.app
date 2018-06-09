@@ -32,7 +32,8 @@ values$e.names <- NA
 values$c.names <- NA
 values$constructs_clusterboot <- NULL
 values$elements_clusterboot <- NULL
- 
+values$cc <- 1   # initial cursor column
+values$cr <- 1   # initial cursor row
 
 
 #### UI variables defined here for convenience ####

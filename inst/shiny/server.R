@@ -141,16 +141,145 @@ shinyServer(function(input, output, session) {
   
   #### __ Bertin ####
   
+  
+  ## highlight rows and constructs ##
+  #
+  # there are arrow buttons to steer the row and column
+  # which gets highlighted
+
+  # rows = constructs
+  observeEvent(input$btn_up, {
+    values$cr <- ifelse(values$cr <= 1, 1, values$cr - 1)
+  })
+  
+  observeEvent(input$btn_down, {
+    values$cr <- ifelse(values$cr >= nrow(values$current_grid), 
+                        nrow(values$current_grid), 
+                        values$cr + 1)
+  })
+  
+  
+  # columns = elements
+  observeEvent(input$btn_left, {
+    values$cc <- ifelse(values$cc <= 1, 1, values$cc - 1)
+    print(values$cc)
+  })
+  
+  observeEvent(input$btn_right, {
+    values$cc <- ifelse(values$cc >= ncol(values$current_grid), 
+                        ncol(values$current_grid), 
+                        values$cc + 1)
+    print(values$cc)
+  })
+
+    
+  ## grid actions (move, delete, swap) ##
+
+  # move construct upwards
+  observeEvent(input$btn_move_up, {
+    req(values$cr > 1 & values$cr <= nrow(values$current_grid))
+    cr <- isolate(values$cr)
+    grid <- isolate(values$current_grid)
+    print("Move up")
+    values$cr <- cr - 1
+    values$current_grid <- up(grid, cr)
+  })
+  
+  
+  # move construct downwards
+  observeEvent(input$btn_move_down, {
+    req(values$cr > 0 & values$cr < nrow(values$current_grid))
+    cr <- isolate(values$cr)
+    grid <- isolate(values$current_grid)
+    print("Move down")
+    values$cr <- cr + 1
+    values$current_grid <- down(grid, cr)
+  })
+  
+  
+  # move element left
+  observeEvent(input$btn_move_left, {
+    req(values$cc > 1 & values$cc <= ncol(values$current_grid))
+    cc <- isolate(values$cc)
+    grid <- isolate(values$current_grid)
+    print("Move left")
+    values$cc <- cc - 1
+    values$current_grid <- left(grid, cc)
+  })
+  
+  
+  # move element right
+  observeEvent(input$btn_move_right, {
+    req(values$cc > 0 & values$cc < ncol(values$current_grid))
+    cc <- isolate(values$cc)
+    grid <- isolate(values$current_grid)
+    print("Move right")
+    values$cc <- cc + 1
+    values$current_grid <- right(grid, cc)
+  })
+  
+  # swap poles
+  observeEvent(input$btn_swap_poles, {
+    req(values$cr > 0 & values$cr <= nrow(values$current_grid))
+    cr <- isolate(values$cr)
+    grid <- isolate(values$current_grid)
+    print("swap poles")
+    values$current_grid <- swapPoles(grid, cr)
+  })
+  
+  
+  # delete construct
+  observeEvent(input$btn_delete_construct, {
+    grid <- isolate(values$current_grid)
+    nr <- nrow(grid)
+    req(values$cr >= 1 & values$cr <= nr)
+    cr <- isolate(values$cr)
+    print("Delete construct")
+    values$cr <- ifelse(cr == nr, cr - 1, cr)
+    values$current_grid <- grid[-cr, ]
+  })
+  
+  
+  # delete element
+  observeEvent(input$btn_delete_element, {
+    grid <- isolate(values$current_grid)
+    ne <- ncol(grid)
+    req(values$cc >= 1 & values$cc <= ne)
+    cc <- isolate(values$cc)
+    print("Delete element")
+    values$cc <- ifelse(cc == ne, cc - 1, cc)
+    values$current_grid <- grid[ , -cc]
+  })
+  
+  
   # info text on top aboce bertin plot
   output$bertin_info <- renderUI({
     HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/bertin.html") )  
   })
+
+  
+  # info text on top aboce bertin plot
+  output$bertin_info <- renderUI({
+    HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/bertin.html") )
+  })
+  
   
   # produce bertin plot
   output$bertin <- renderPlot({
     cex <- 1.1
     x <- get_file()
-    if (!is.null(x))
+    
+    # check if bertin plot is shown with row/column highlighting
+    if (input$tabets_bertin == "panel_bertin_modify") {
+      cc = values$cc
+      cr = values$cr
+    } else {
+      cc = 0
+      cr = 0
+    }
+    
+    # draw bertin if grid object exists
+    if (!is.null(x)) {
       bertin(x, 
              cex.elements=input$bertin_standard_cex_all,    # font size elements 
              cex.text=input$bertin_standard_cex_all,        # font size cells
@@ -160,7 +289,10 @@ shinyServer(function(input, output, session) {
              showvalues=input$bertin_standard_showvalues,   # show ratings?
              xlim=c(input$bertin_standard_xlim_1,           # left and right margins
                     1 - input$bertin_standard_xlim_2),
-             ylim = c(0, input$bertin_standard_ylim))       # top margin for elements
+             ylim = c(0, 1- input$bertin_standard_ylim),    # top margin for elements 1 = all space, 0 = no space
+             cc = cc,   # highlight column index
+             cr = cr)   # highlight row index
+    }
   })
   
 
