@@ -124,7 +124,7 @@ shinyServer(function(input, output, session) {
   })  
   
   
-  ## rendered UI elemenst for conditional panels
+  ## rendered UI elements for conditional panels
   
   # info text for sample grid depends on selected grid
   output$samplegrid_info <- renderUI({ 
@@ -299,7 +299,24 @@ shinyServer(function(input, output, session) {
   
   #### __ Biplot ####
   
+  
   #### ____ 2D  ####
+  
+  
+  # element selection checkboxes
+  output$biplot.element.selector.12 <- renderUI({
+    checkboxGroupInput("biplot_element_selector_12", 
+                       "", isolate(values$e.names),
+                       selected = isolate(values$e.names))
+  })
+   
+   
+  # construct selection checkboxes
+  output$biplot.construct.selector.12 <- renderUI({
+     checkboxGroupInput("biplot_construct_selector_12", 
+                         "", isolate(values$c.names),
+                         selected = isolate(values$c.names))
+  })
   
   
   # add infor text at top over biplot
@@ -334,7 +351,8 @@ shinyServer(function(input, output, session) {
     } else if (!is.null(x)) {
     # produce 2D biplot
       biplot2d(x, 
-               g=input$biplot_12_g, 
+               #g=input$biplot_12_g, 
+               g = 0,
                dim=dim, 
                center=input$biplot_12_center, 
                normalize=input$biplot_12_normalize,

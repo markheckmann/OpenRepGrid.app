@@ -123,12 +123,12 @@ choices.center <- c("No centering"=0,
                     "Double-centering (construct and element means)"=3,
                     "Midpoint centering of rows (constructs)"=4)
 choices.normalize <- c(none=0, rows=1, columns=2)
-biplot.element.selector.12 <- checkboxGroupInput("biplot_element_selector_12", 
-                                                 "", isolate(values$e.names),
-                                                 selected = isolate(values$e.names))
-biplot.construct.selector.12 <- checkboxGroupInput("biplot_construct_selector_12", 
-                                                   "", isolate(values$c.names),
-                                                   selected = isolate(values$c.names))
+# biplot.element.selector.12 <- checkboxGroupInput("biplot_element_selector_12", 
+#                                                  "", isolate(values$e.names),
+#                                                  selected = isolate(values$e.names))
+# biplot.construct.selector.12 <- checkboxGroupInput("biplot_construct_selector_12", 
+#                                                    "", isolate(values$c.names),
+#                                                    selected = isolate(values$c.names))
 
 
 # build left panel
@@ -141,13 +141,16 @@ cond.panel.biplots.dim.12 <-
                               actionButton("biplot_12_toggle_elements", "Toggle On/off"),
                               actionButton("biplot_12_update_button_elements", "Update Biplot"),
                               HTML("<hr>"),
-                              biplot.element.selector.12
+                              # biplot.element.selector.12
+                              htmlOutput("biplot.element.selector.12")
+                              
                      ),
                      tabPanel("Constructs", 
                               actionButton("biplot_12_toggle_constructs", "Toggle On/off"),
                               actionButton("biplot_12_update_button_constructs", "Update Biplot"),
                               HTML("<hr>"),
-                              biplot.construct.selector.12
+                              # biplot.construct.selector.12
+                              htmlOutput("biplot.construct.selector.12")
                      ),
                      tabPanel("Transforms",
                               h5("Transformations"),
@@ -156,8 +159,8 @@ cond.panel.biplots.dim.12 <-
                                           selectize=FALSE),
                               selectInput("biplot_12_normalize", "Normalize", 
                                           choices=choices.normalize, selected=choices.normalize[1],
-                                          selectize=FALSE),
-                              numericInput("biplot_12_g", "g", 0, 0, 1, .1)
+                                          selectize=FALSE) #,
+                              # numericInput("biplot_12_g", "g", 0, 0, 1, .1)
                      ),
                      tabPanel("Axes",
                               HTML("<hr>"), 
@@ -196,7 +199,7 @@ cond.panel.biplots.dim.12 <-
                               selectInput("biplot_12_c_point_col", "Symbol", colors.all, "black", selectize=FALSE),
                               selectInput("biplot_12_c_label_col", "Label", colors.all, "black", selectize=FALSE) 
                      ),
-                     id="todo")               
+                     id="tabs_biplot")               
   ) 
 
 
