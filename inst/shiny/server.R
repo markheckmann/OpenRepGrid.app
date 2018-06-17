@@ -191,7 +191,6 @@ shinyServer(function(input, output, session) {
     req(values$cr > 0 & values$cr < nrow(values$current_grid))
     cr <- isolate(values$cr)
     grid <- isolate(values$current_grid)
-    print("Move down")
     values$cr <- cr + 1
     values$current_grid <- down(grid, cr)
   })
@@ -202,7 +201,6 @@ shinyServer(function(input, output, session) {
     req(values$cc > 1 & values$cc <= ncol(values$current_grid))
     cc <- isolate(values$cc)
     grid <- isolate(values$current_grid)
-    print("Move left")
     values$cc <- cc - 1
     values$current_grid <- left(grid, cc)
   })
@@ -213,7 +211,6 @@ shinyServer(function(input, output, session) {
     req(values$cc > 0 & values$cc < ncol(values$current_grid))
     cc <- isolate(values$cc)
     grid <- isolate(values$current_grid)
-    print("Move right")
     values$cc <- cc + 1
     values$current_grid <- right(grid, cc)
   })
@@ -223,7 +220,6 @@ shinyServer(function(input, output, session) {
     req(values$cr > 0 & values$cr <= nrow(values$current_grid))
     cr <- isolate(values$cr)
     grid <- isolate(values$current_grid)
-    print("swap poles")
     values$current_grid <- swapPoles(grid, cr)
   })
   
@@ -234,7 +230,6 @@ shinyServer(function(input, output, session) {
     nr <- nrow(grid)
     req(values$cr >= 1 & values$cr <= nr)
     cr <- isolate(values$cr)
-    print("Delete construct")
     values$cr <- ifelse(cr == nr, cr - 1, cr)
     values$current_grid <- grid[-cr, ]
   })
@@ -246,7 +241,6 @@ shinyServer(function(input, output, session) {
     ne <- ncol(grid)
     req(values$cc >= 1 & values$cc <= ne)
     cc <- isolate(values$cc)
-    print("Delete element")
     values$cc <- ifelse(cc == ne, cc - 1, cc)
     values$current_grid <- grid[ , -cc]
   })

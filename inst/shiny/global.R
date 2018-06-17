@@ -30,6 +30,7 @@ values$c.names <- "No grid selected"
 values$current_grid <- NULL
 values$e.names <- NA
 values$c.names <- NA
+values$ideal_element <- NA
 values$constructs_clusterboot <- NULL
 values$elements_clusterboot <- NULL
 values$cc <- 1   # initial cursor column

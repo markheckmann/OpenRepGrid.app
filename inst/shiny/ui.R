@@ -28,10 +28,9 @@
 #### SIDEBAR PANELS ####
 
 
-#### __ Settings ####
+#### __ Load ####
 
-
-cond.panel.settings <- 
+cond.panel.load <- 
   conditionalPanel(condition="input.level1=='load_grid'",
                    h3("Select a grid"),
                    HTML("<hr>"),
@@ -53,8 +52,20 @@ cond.panel.settings <-
   )
 
 
-#### __ Bertin ####
+#### __ Settings ####
 
+cond.panel.settings <- 
+  conditionalPanel(condition="input.level1=='grid_settings'",
+                   h3("Select a grid"),
+                   selectInput("settings_ideal_element", 
+                               label = "Ideal element",
+                               choices = isolate(values$e.names), 
+                               selected = isolate(values$ideal_element),
+                               selectize=FALSE)
+                   )
+
+
+#### __ Bertin ####
 
 # build left panel
 cond.panel.bertin <-
@@ -474,13 +485,22 @@ cond.panel.indexes.intensity <-
 #### MAIN PANELS ####
 
 
-#### __ Settings ####
+#### __ Load ####
 
-level1.panel.settings <- 
+level1.panel.load <- 
   tabPanel(title = "Load grid", 
            # complete ui generated on server
            uiOutput("load_grid"), 
            value="load_grid")
+
+
+#### __ Settings ####
+
+level1.panel.settings <- 
+  tabPanel(title = "Settings", 
+           # complete ui generated on server
+           # uiOutput("load_grid"), 
+           value="grid_settings")
 
   
 #### __ Bertin ####
@@ -586,6 +606,9 @@ shinyUI(fluidPage(
   
   sidebarPanel( 
     
+    ## Load ##
+    cond.panel.load,
+    
     ## Settings ##
     cond.panel.settings,
     
@@ -641,6 +664,7 @@ shinyUI(fluidPage(
     
     h3( textOutput("caption") ),
     tabsetPanel(
+        level1.panel.load,
         level1.panel.settings,
         level1.panel.bertin,
         level1.panel.biplots,
