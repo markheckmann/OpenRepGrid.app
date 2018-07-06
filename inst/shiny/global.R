@@ -8,7 +8,8 @@ library(stringr)
 library(shinythemes)
 library(shinyBS)
 library(OpenRepGrid, quietly=TRUE)
-
+library(DT)
+library(rhandsontable)
 
 #### ----------------------- SETTINGS --------------------####
 
@@ -28,6 +29,7 @@ values <- reactiveValues()
 values$e.names <- "No grid selected"
 values$c.names <- "No grid selected"
 values$current_grid <- NULL
+values$current_grid_df <- NULL
 values$e.names <- NA
 values$c.names <- NA
 values$ideal_element <- NA

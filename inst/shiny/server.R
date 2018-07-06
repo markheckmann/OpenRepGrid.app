@@ -139,6 +139,55 @@ shinyServer(function(input, output, session) {
   
   
   
+  #### __ Settings ####
+  
+  # modify constricts, elements, and ratings
+  output$grid_datatable = renderDT({
+    req(values$current_grid)
+    get_grid_dataframe(values$current_grid)
+  }, selection = 'none', server = T, editable = T, rownames=F)
+
+  proxy = dataTableProxy('grid_datatable')
+
+  observeEvent(input$grid_datatable_cell_edit, {
+    info = input$grid_datatable_cell_edit
+    str(info)
+    i = info$row
+    j = info$col + 1  # column index offset by 1
+    v = info$value
+   # rv$g_klasse[i, j] <<- DT::coerceValue(v,  rv$g_klasse[i, j])
+    #rv$status <- "Gewichte für Klassen aktualisiert"
+    #replaceData(proxy, rv$g_klasse, resetPaging = FALSE, rownames = FALSE)
+  })
+  
+  
+  #### ____ Modifiable table ####
+  
+  # http://stla.github.io/stlapblog/posts/shiny_editTable.html
+  # when grid changes update handsometable
+  output$hot <- renderRHandsontable({
+    req(values$current_grid)
+    cat("\nUpdate handomsetable")
+    values$current_grid_df <- get_grid_dataframe(values$current_grid)
+    if (!is.null(values$current_grid_df))
+      rhandsontable(isolate(values$current_grid_df), stretchH = "all", useTypes = F)
+  })
+  
+  # when values in handsometable change update current_grid_df object
+  # and in turn the current_grid object
+  observe({
+    if (!is.null(input$hot)) {
+      DF = hot_to_r(input$hot)
+      cat("\nGet handsometable data and update grid object")
+      # values$current_grid_df <- DF
+      update_current_grid_from_df(DF)
+    } 
+  })
+  
+  
+  
+  
+  
   #### __ Bertin ####
   
   

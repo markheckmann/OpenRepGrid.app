@@ -500,6 +500,8 @@ level1.panel.settings <-
   tabPanel(title = "Settings", 
            # complete ui generated on server
            # uiOutput("load_grid"), 
+           rHandsontableOutput("hot"),
+           # div(DTOutput("grid_datatable"), style = "font-size:80%; width:90%"),
            value="grid_settings")
 
   
