@@ -179,7 +179,6 @@ shinyServer(function(input, output, session) {
     if (!is.null(input$hot)) {
       df = hot_to_r(input$hot)    # get input table data
       cat("\nGet handsometable data and update grid object")
-      # values$current_grid_df <- DF
       update_current_grid_from_df(df)
     }
   })

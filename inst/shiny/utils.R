@@ -72,25 +72,37 @@ update_current_grid_from_df <- function(x)
   g <- isolate(values$current_grid)
   
   # if any values have changed then update current grid
-  if ( !all(x == get_grid_dataframe(g), na.rm = T) ) {
+  if ( !all(x == get_grid_dataframe(g), na.rm = T) ) 
+  {
     cat("\nUpdate current grid with modifiable table data")
   
-  # get components: ratings, poles 
-  right <- ncol(x)            # right poles
-  leftpoles(g) <- x[[1]]      # replace left poles with data from hot table
-  rightpoles(g) <- x[[right]] # replace right poles with data from hot table
-  
-  # update ratings
-  r <- x[, c(-1, -right), drop=FALSE]
-  g[,] <- as.matrix(r)
- 
-  # replace current grid
-  values$current_grid <- g
+    # get components: ratings, poles 
+    right <- ncol(x)            # right poles
+    leftpoles(g) <- x[[1]]      # replace left poles with data from hot table
+    rightpoles(g) <- x[[right]] # replace right poles with data from hot table
+    
+    ## update ratings 
+    # catch error thrown if ratings are outside scale range and 
+    # reset hot table to former values
+    r <- x[, c(-1, -right), drop=FALSE]
+    e <- try( g[,] <- as.matrix(r) )
+    if (inherits(e, "try-error")) {
+      values$current_grid_df <- x
+    } else {
+      values$current_grid <- g
+    }
+
   }
 }
 
-
-
+# 
+# b <- tryCatch({
+#   log("10")
+#   }, 
+#   error=function(e) {
+#     h <- 10
+#     NA
+# })
 
 
 
