@@ -159,17 +159,16 @@ cond.panel.biplots.dim.12 <-
                      tabPanel("Elements", 
                               tags$br(),
                               actionButton("biplot_12_toggle_elements", "Toggle On/off"),
-                              tags$button("Run analysis", id="biplot_12_update_button_elements", type="button", class="btn action-button btn-success"),
+                              tags$button("Update Biplot", id="biplot_12_update_button_elements", type="button", class="btn action-button btn-success"),
                               # actionButton("biplot_12_update_button_elements", "Update Biplot"),
                               HTML("<hr>"),
                               # biplot.element.selector.12
                               htmlOutput("biplot.element.selector.12")
-                              
                      ),
                      tabPanel("Constructs", 
                               tags$br(),
                               actionButton("biplot_12_toggle_constructs", "Toggle On/off"),
-                              tags$button("Run analysis", id="biplot_12_update_button_constructs", type="button", class="btn action-button btn-success"),
+                              tags$button("Update Biplot", id="biplot_12_update_button_constructs", type="button", class="btn action-button btn-success"),
                               # actionButton("biplot_12_update_button_constructs", "Update Biplot"),
                               HTML("<hr>"),
                               # biplot.construct.selector.12
@@ -511,13 +510,15 @@ level1.panel.start <-
 level1.panel.load <- 
   tabPanel(title = "Load grid", 
            tags$br(),
-           tags$h3("Data settings"),
+           tags$h3("Settings"),
            tags$br(),
            selectInput("settings_ideal_element", 
                        label = "Ideal element",
                        choices = isolate(values$e.names), 
                        selected = isolate(values$ideal_element),
                        selectize=FALSE),
+           tags$p("For some type of analysis, e.g. implicative dilemma, it is 
+                  necessary to define an ideal element."),
            tags$br(),
            tags$h3("Grid data"),
            tags$p("You can modify the grid ratings and construct poles directly in the table."),
