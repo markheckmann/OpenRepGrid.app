@@ -111,25 +111,25 @@ shinyServer(function(input, output, session) {
     list(br(),
          h3("About OpenRepGrid.app"),
          HTML("<p><i>OpenRepGrid.app</i> is an
-              online grid analysis software. It allows to carry out several kinds of
+              online grid analysis software. It allows carrying out several kinds of
               analysis for repertory grid data. The software is based on the
               <a href='http://docu.openrepgrid.org' target='_blank'>OpenRepGrid</a>
               R package which runs in the background to produce the output.</p>"),
-         HTML("<p>In the top panel you find the available (analysis) feature tabs.
+         HTML("<p>In the top panel you find the available analysis feature tabs.
               When you select a tab you will see the available settings for
-              the feature or analysis in the panel on the left.</p>"),
+              the analysis in the panel on the left.</p>"),
          br(),
          h3("Technical Requirements"),
-         HTML("Not all browser support all application features properly.
+         HTML("Not all browser are well supported.
                The Google Chrome, Microsoft Edge and Firefox browsers seem to work in most cases.
                </p>"),
          br(),
          h3("Tips to get started"),
          HTML("<p>On several tabs you will find a small 'info' button in the upper right corner. 
-               Click it to see additional infotmation on a feature.</p>"),
+               Click it to see additional information on a feature.</p>"),
          br(),
          h3("Citation"),
-         HTML("<p>If you use the software, please cite it in your publication as follows:</p>
+         HTML("<p>If you use the software in a publication, please cite as follows:</p>
                <p>Heckmann, M. (2014). <i>OpenRepGrid.app: A web based frontend to the OpenRepGrid R 
                package for the analysis of repertory grids.</i>
                ZENODO. doi:10.5281/zenodo.8492
