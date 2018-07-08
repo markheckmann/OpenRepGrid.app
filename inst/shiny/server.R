@@ -53,7 +53,7 @@ shinyServer(function(input, output, session) {
   observe({
     g <- values$current_grid
     if (!is.null(g)) {
-      values$e.names <- getElementNames(g)
+      values$e.names <- elements(g)
       values$c.names <- getConstructNames2(g) 
     #  values$constructs_clusterboot <- NULL    # reset clusterboot results
     }
@@ -104,24 +104,38 @@ shinyServer(function(input, output, session) {
   
   
   
-  #### __ Load grids ####
+  #### __ Start  ####
   
   # text in main panel on grid loading page
-  output$load_grid <- renderUI({
-    list(h3("Welcome to OpenRepGrid.app"),
-         HTML("<p><i>OpenRepGrid.app</i> is an 
+  output$start <- renderUI({
+    list(br(),
+         h3("About OpenRepGrid.app"),
+         HTML("<p><i>OpenRepGrid.app</i> is an
               online grid analysis software. It allows to carry out several kinds of
-              analysis for repertory grid data. The software is based on the 
-              <a href='http://docu.openrepgrid.org' target='_blank'>OpenRepGrid</a> 
+              analysis for repertory grid data. The software is based on the
+              <a href='http://docu.openrepgrid.org' target='_blank'>OpenRepGrid</a>
               R package which runs in the background to produce the output.</p>"),
-         HTML("<p>In the top panel you will find the available (analysis) features. 
-              Once you select a feature you will see the available settings for 
-              the feature in the panel on the left.</p>"),
-         HTML("<hr><p><font color='red'><b>Caveat:</b></font> Not all browser support all application features properly. 
-              The Google Chrome browser seems to work in most cases.
+         HTML("<p>In the top panel you find the available (analysis) feature tabs.
+              When you select a tab you will see the available settings for
+              the feature or analysis in the panel on the left.</p>"),
+         br(),
+         h3("Technical Requirements"),
+         HTML("Not all browser support all application features properly.
+               The Google Chrome, Microsoft Edge and Firefox browsers seem to work in most cases.
+               </p>"),
+         br(),
+         h3("Tips to get started"),
+         HTML("<p>On several tabs you will find a small 'info' button in the upper right corner. 
+               Click it to see additional infotmation on a feature.</p>"),
+         br(),
+         h3("Citation"),
+         HTML("<p>If you use the software, please cite it in your publication as follows:</p>
+               <p>Heckmann, M. (2014). <i>OpenRepGrid.app: A web based frontend to the OpenRepGrid R 
+               package for the analysis of repertory grids.</i>
+               ZENODO. doi:10.5281/zenodo.8492
               </p>")
     )
-  })  
+  })
   
   
   ## rendered UI elements for conditional panels
@@ -141,50 +155,34 @@ shinyServer(function(input, output, session) {
   
   #### __ Settings ####
   
-  # modify constricts, elements, and ratings
-  output$grid_datatable = renderDT({
-    req(values$current_grid)
-    get_grid_dataframe(values$current_grid)
-  }, selection = 'none', server = T, editable = T, rownames=F)
 
-  proxy = dataTableProxy('grid_datatable')
-
-  observeEvent(input$grid_datatable_cell_edit, {
-    info = input$grid_datatable_cell_edit
-    str(info)
-    i = info$row
-    j = info$col + 1  # column index offset by 1
-    v = info$value
-   # rv$g_klasse[i, j] <<- DT::coerceValue(v,  rv$g_klasse[i, j])
-    #rv$status <- "Gewichte für Klassen aktualisiert"
-    #replaceData(proxy, rv$g_klasse, resetPaging = FALSE, rownames = FALSE)
-  })
-  
-  
   #### ____ Modifiable table ####
   
   # http://stla.github.io/stlapblog/posts/shiny_editTable.html
-  # when grid changes update handsometable
-  output$hot <- renderRHandsontable({
-    req(values$current_grid)
+  # update handsometable when grid changes 
+  #
+  output$hot <- renderRHandsontable(
+  {
+    req(values$current_grid)         
     cat("\nUpdate handomsetable")
-    values$current_grid_df <- get_grid_dataframe(values$current_grid)
+    g_df <- get_grid_dataframe(values$current_grid)
+    colnames(g_df) <- str_wrap(colnames(g_df), width = 10)  # break element names to fit in column
+    values$current_grid_df <- g_df
+    
     if (!is.null(values$current_grid_df))
       rhandsontable(isolate(values$current_grid_df), stretchH = "all", useTypes = F)
   })
-  
-  # when values in handsometable change update current_grid_df object
+
+  # when values in handsometable change, update current_grid_df object
   # and in turn the current_grid object
   observe({
     if (!is.null(input$hot)) {
-      DF = hot_to_r(input$hot)
+      df = hot_to_r(input$hot)    # get input table data
       cat("\nGet handsometable data and update grid object")
       # values$current_grid_df <- DF
-      update_current_grid_from_df(DF)
-    } 
+      update_current_grid_from_df(df)
+    }
   })
-  
-  
   
   
   
@@ -295,10 +293,16 @@ shinyServer(function(input, output, session) {
   })
   
   
-  # info text on top aboce bertin plot
-  output$bertin_info <- renderUI({
-    HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/bertin.html") )  
+  # info text on top above start screen
+  output$start_info <- renderUI({
+    HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/start.html") )  
   })
+  
+  
+  # # info text on top aboce bertin plot
+  # output$bertin_info <- renderUI({
+  #   HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/bertin.html") )  
+  # })
 
   
   # info text on top aboce bertin plot

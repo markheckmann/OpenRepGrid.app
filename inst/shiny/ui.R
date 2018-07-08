@@ -28,6 +28,14 @@
 #### SIDEBAR PANELS ####
 
 
+#### __ Start ####
+
+cond.panel.start <- 
+  conditionalPanel(condition="input.level1=='start'",
+                   h3("Welcome")
+                   )
+
+
 #### __ Load ####
 
 cond.panel.load <- 
@@ -54,15 +62,15 @@ cond.panel.load <-
 
 #### __ Settings ####
 
-cond.panel.settings <- 
-  conditionalPanel(condition="input.level1=='grid_settings'",
-                   h3("Select a grid"),
-                   selectInput("settings_ideal_element", 
-                               label = "Ideal element",
-                               choices = isolate(values$e.names), 
-                               selected = isolate(values$ideal_element),
-                               selectize=FALSE)
-                   )
+# cond.panel.settings <- 
+#   conditionalPanel(condition="input.level1=='grid_settings'",
+#                    h3("Select a grid"),
+#                    selectInput("settings_ideal_element", 
+#                                label = "Ideal element",
+#                                choices = isolate(values$e.names), 
+#                                selected = isolate(values$ideal_element),
+#                                selectize=FALSE)
+#                    )
 
 
 #### __ Bertin ####
@@ -149,16 +157,20 @@ cond.panel.biplots.dim.12 <-
                    tabsetPanel(
                      #tabPanel("Info", get_html_docu("biplot2d")),
                      tabPanel("Elements", 
+                              tags$br(),
                               actionButton("biplot_12_toggle_elements", "Toggle On/off"),
-                              actionButton("biplot_12_update_button_elements", "Update Biplot"),
+                              tags$button("Run analysis", id="biplot_12_update_button_elements", type="button", class="btn action-button btn-success"),
+                              # actionButton("biplot_12_update_button_elements", "Update Biplot"),
                               HTML("<hr>"),
                               # biplot.element.selector.12
                               htmlOutput("biplot.element.selector.12")
                               
                      ),
                      tabPanel("Constructs", 
+                              tags$br(),
                               actionButton("biplot_12_toggle_constructs", "Toggle On/off"),
-                              actionButton("biplot_12_update_button_constructs", "Update Biplot"),
+                              tags$button("Run analysis", id="biplot_12_update_button_constructs", type="button", class="btn action-button btn-success"),
+                              # actionButton("biplot_12_update_button_constructs", "Update Biplot"),
                               HTML("<hr>"),
                               # biplot.construct.selector.12
                               htmlOutput("biplot.construct.selector.12")
@@ -485,26 +497,35 @@ cond.panel.indexes.intensity <-
 #### MAIN PANELS ####
 
 
+#### __ Start ####
+
+level1.panel.start <- 
+  tabPanel(title = "Start", 
+           htmlOutput("start_info"),  
+           uiOutput("start"), 
+           value="start")
+
+
 #### __ Load ####
 
 level1.panel.load <- 
   tabPanel(title = "Load grid", 
-           # complete ui generated on server
-           uiOutput("load_grid"), 
+           tags$br(),
+           tags$h3("Data settings"),
+           tags$br(),
+           selectInput("settings_ideal_element", 
+                       label = "Ideal element",
+                       choices = isolate(values$e.names), 
+                       selected = isolate(values$ideal_element),
+                       selectize=FALSE),
+           tags$br(),
+           tags$h3("Grid data"),
+           tags$p("You can modify the grid ratings and construct poles directly in the table."),
+           tags$br(),
+           rHandsontableOutput("hot"),
            value="load_grid")
 
 
-#### __ Settings ####
-
-level1.panel.settings <- 
-  tabPanel(title = "Settings", 
-           # complete ui generated on server
-           # uiOutput("load_grid"), 
-           rHandsontableOutput("hot"),
-           # div(DTOutput("grid_datatable"), style = "font-size:80%; width:90%"),
-           value="grid_settings")
-
-  
 #### __ Bertin ####
 
 level1.panel.bertin <- 
@@ -512,7 +533,6 @@ level1.panel.bertin <-
            # collapsable info box 
            # requires js.js and styles.css from /www to be read in.
            # done in main panel 
-
            htmlOutput("bertin_info"),  
            # bertin plot 
            plotOutput("bertin", width="600px", height="600px"),  
@@ -540,8 +560,6 @@ level1.panel.biplots <-
                       value="level2_biplots_3d"),
            id="level2_biplots"),
   value="level1_biplot_standard")
-
-
 
 
 
@@ -608,11 +626,14 @@ shinyUI(fluidPage(
   
   sidebarPanel( 
     
+    ## Start ##
+    cond.panel.start,
+    
     ## Load ##
     cond.panel.load,
     
     ## Settings ##
-    cond.panel.settings,
+    #cond.panel.settings,
     
     ## Bertin ##
     cond.panel.bertin,
@@ -639,15 +660,15 @@ shinyUI(fluidPage(
     ## indexes ##
     cond.panel.indexes.pvaff,
     cond.panel.indexes.implicative.dilemma,
-    cond.panel.indexes.intensity,
+    cond.panel.indexes.intensity
     
-    ## toggle tooltips button ##
-    HTML("<hr>"),
-    tags$div(checkboxInput(inputId = "chk_toggle_tooltips", 
-                           label = "Info for controls"), 
-             id="chk_toggle_tooltip_wrapper_div", 
-             style="float: left;"),
-    HTML("<br>")
+    # ## toggle tooltips button ##
+    # HTML("<hr>"),
+    # tags$div(checkboxInput(inputId = "chk_toggle_tooltips",
+    #                        label = "Info for controls"),
+    #          id="chk_toggle_tooltip_wrapper_div",
+    #          style="float: left;"),
+    # HTML("<br>")
   ),
   
   
@@ -666,8 +687,9 @@ shinyUI(fluidPage(
     
     h3( textOutput("caption") ),
     tabsetPanel(
+        level1.panel.start,
         level1.panel.load,
-        level1.panel.settings,
+        #level1.panel.settings,
         level1.panel.bertin,
         level1.panel.biplots,
         level1.panel.constructs,

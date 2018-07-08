@@ -8,7 +8,6 @@ library(stringr)
 library(shinythemes)
 library(shinyBS)
 library(OpenRepGrid, quietly=TRUE)
-library(DT)
 library(rhandsontable)
 
 #### ----------------------- SETTINGS --------------------####

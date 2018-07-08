@@ -15,7 +15,7 @@ Description:
     Under the hood, the GUI uses functions from the OpenRepGrid package 
     (<https://CRAN.R-project.org/package=OpenRepGrid>).
 Version: 0.2
-Date: 2018-06-09
+Date: 2018-07-07
 Imports:
     shiny,
     reshape2,
@@ -23,7 +23,8 @@ Imports:
     shinythemes,
     shinyBS,
     stringr,
-    OpenRepGrid
+    OpenRepGrid,
+    rhandsontable
 Suggests:
     knitr,
     testthat,

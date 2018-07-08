@@ -43,8 +43,8 @@ get_grid_dataframe <- function(x)
   if (!inherits(x, "repgrid"))
       stop("'x' muste be a repgrid object.", call. = FALSE)
   
-  e <- getElementNames(x)
-  c <- getConstructNames(x)
+  e <- elements(x)
+  c <- constructs(x)
   r <- getRatingLayer(x, names=FALSE)
   
   r <- as.data.frame(r)
@@ -60,18 +60,41 @@ get_grid_dataframe <- function(x)
 }
 
 
-# take the data dataframe returned from modifiable table
-# and update current grid object if anything in the table 
-# has changed
+
+# take the dataframe returned from modifiable table
+# and update the current grid object if anything in the table 
+# has changed.
+# x: new data from hot table
 #
 update_current_grid_from_df <- function(x)
 {
-  # if any values have changed update current grid
-  if ( !all(x == get_grid_dataframe(values$current_grid), na.rm = T) ) {
+  # get current grid object  
+  g <- isolate(values$current_grid)
+  
+  # if any values have changed then update current grid
+  if ( !all(x == get_grid_dataframe(g), na.rm = T) ) {
     cat("\nUpdate current grid with modifiable table data")
+  
+  # get components: ratings, poles 
+  right <- ncol(x)            # right poles
+  leftpoles(g) <- x[[1]]      # replace left poles with data from hot table
+  rightpoles(g) <- x[[right]] # replace right poles with data from hot table
+  
+  # update ratings
+  r <- x[, c(-1, -right), drop=FALSE]
+  g[,] <- as.matrix(r)
+ 
+  # replace current grid
+  values$current_grid <- g
   }
-    
 }
+
+
+
+
+
+
+
 
 
 

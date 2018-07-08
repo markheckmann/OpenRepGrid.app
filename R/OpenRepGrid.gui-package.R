@@ -28,7 +28,8 @@ NULL
 #' @import shinyBS
 #' @import stringr
 #' @import OpenRepGrid
-
+#' @import rhandsontable
+#' 
 #' @examples
 #' \dontrun{
 #' OpenRepGrid.app()
