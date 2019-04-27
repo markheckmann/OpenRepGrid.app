@@ -133,7 +133,9 @@ shinyServer(function(input, output, session) {
                <p>Heckmann, M. (2014). <i>OpenRepGrid.app: A web based frontend to the OpenRepGrid R 
                package for the analysis of repertory grids.</i>
                ZENODO. doi:10.5281/zenodo.8492
-              </p>")
+              </p>"),
+         br(),
+         br()
     )
   })
   
@@ -294,7 +296,7 @@ shinyServer(function(input, output, session) {
   
   # info text on top above start screen
   output$start_info <- renderUI({
-    HTML( inject_info_on_top_of_ui_pages("bertin", "www/info/start.html") )  
+    HTML( inject_info_on_top_of_ui_pages("start", "www/info/start.html") )  
   })
   
   

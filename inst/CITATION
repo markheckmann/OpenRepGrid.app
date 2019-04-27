@@ -1,11 +1,11 @@
 citHeader("To cite OpenRepGrid.app in publications, please use:")
 
 citEntry(entry = "article",
-  author = "Mark Heckmann, Lukas Burk",
-  title = "OpenRepGrid.app: A tool to analyse repertory grid data. R package version 0.1.",
+  author = "Mark Heckmann",
+  title = "OpenRepGrid.app: A tool to analyse repertory grid data. R package version 0.2.",
   journal = "Zenodo",
-  year = "2018",
+  year = "2019",
   doi = "10.5281/zenodo.61067",
   url = "https://github.com/markheckmann/OpenRepGrid.app",
-  textVersion = "Heckmann, M. (2018). OpenRepGrid.app: A tool to analyse repertory grid data. R package version 0.1. *Zenodo*. doi:10.5281/zenodo.61067"
+  textVersion = "Heckmann, M. (2019). OpenRepGrid.app: A tool to analyse repertory grid data. R package version 0.2. *Zenodo*. doi:10.5281/zenodo.61067"
 )

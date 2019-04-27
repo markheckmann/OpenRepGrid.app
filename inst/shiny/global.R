@@ -7,13 +7,17 @@ library(ggplot2)
 library(stringr)
 library(shinythemes)
 library(shinyBS)
-library(OpenRepGrid, quietly=TRUE)
+library(OpenRepGrid, quietly = TRUE)
 library(rhandsontable)
+
+# Current package version (displayed in header)
+app_version <- paste0("OpenRepGrid.app v", packageVersion("OpenRepGrid.app"))
+
 
 #### ----------------------- SETTINGS --------------------####
 
-options(width=150)
-options(rgl.useNULL=TRUE) 
+options(width = 150)
+options(rgl.useNULL = TRUE) 
 
 
 #### ----------------------- CONSTANTS -------------------####

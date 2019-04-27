@@ -201,7 +201,7 @@ cond.panel.biplots.dim.12 <-
                               numericInput("biplot_12_c_label_cex", "Constructs", 1.2, 0, 2, .1),
                               numericInput("biplot_12_e_label_cex", "Elements", 1.2, 0, 2, .1),
                               h5("Symbol size"),       
-                              numericInput("biplot_12_c_point_cex", "Constructs", 1.2, 0, 2, .1),      
+                              numericInput("biplot_12_c_point_cex", "Constructs", 0, 0, 2, .1),    # hide constructs by default  
                               numericInput("biplot_12_e_point_cex", "Elements", 1.2, 0, 2, .1),
                               h5("Plot size in pixel"),       
                               sliderInput("biplot_12_plotsize", "", 600, min=300, max=1200, step=100)            
@@ -524,6 +524,7 @@ level1.panel.load <-
            tags$p("You can modify the grid ratings and construct poles directly in the table."),
            tags$br(),
            rHandsontableOutput("hot"),
+           tags$br(),
            value="load_grid")
 
 
@@ -620,7 +621,7 @@ level1.panel.indexes <-
  # shinyUI(pageWithSidebar(
 shinyUI(fluidPage(
   theme = shinythemes::shinytheme("united"),
-  headerPanel("OpenRepGrid.app"),
+  headerPanel(app_version),
   
   
   #### __ Sidebar panel ####
